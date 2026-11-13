@@ -22,7 +22,7 @@ Claims verified (see DATACARD.md for the claim table):
 
 Exit 0 = every claim reproduced. Any mismatch prints the claim and diff.
 """
-import sys
+import json, sys
 from pathlib import Path
 import pyarrow.parquet as pq
 
@@ -33,6 +33,15 @@ def check(claim, ok, detail=''):
     print(('PASS ' if ok else 'FAIL ') + claim + (f' | {detail}' if detail else ''))
     if not ok:
         failures.append(claim)
+
+import hashlib
+checksums = json.loads((DATA / 'checksums.json').read_text())
+for split, digest in checksums['sha256'].items():
+    actual = hashlib.sha256((DATA / f'{split}.parquet').read_bytes()).hexdigest()
+    if actual != digest:
+        print(f'FAIL checksums: {split}.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)')
+        sys.exit(1)
+print('PASS checksums: split hashes match checksums.json')
 
 games = pq.read_table(DATA / 'games.parquet').to_pylist()
 decisions = pq.read_table(DATA / 'decisions.parquet').to_pylist()
@@ -106,6 +115,10 @@ def midrank_percentile(rows, cash_field):
             i = j + 1
         values.append(ranks[r['offers'].index(r['chosen'])] / len(cash))
     return sum(values) / len(values) if values else None
+
+# Integrity: every games row must agree with its decision rows.
+for game_row in games:
+    check_game_row(game_row['game'])
 
 # A: acceptance game.
 row, (t, d, share, hhi) = check_game_row('l4-20261109-original')

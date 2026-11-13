@@ -1,0 +1,82 @@
+[
+  {
+    "mutation": "M1 swap one chosen target in the acceptance game",
+    "detail": "one bribe decision retargeted",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: decisions.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M2 inflate acceptance share in games.parquet",
+    "detail": "games row share 0.0357 -> 0.05",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: games.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M3 scale engine cash in one uniform game",
+    "detail": "uniform-20261105 engine cash transformed",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: decisions.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M4 drop one offer from L4 decisions",
+    "detail": "offers shrunk by one in l4-20261113",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: decisions.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M5 corrupt visible cash everywhere (unused field)",
+    "detail": "offer_cash_visible set to constant 42",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: decisions.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M6 flip accepted_actions of a uniform game",
+    "detail": "uniform-20261102 accepted_actions -> 999",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: games.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M7 small drift inside tolerance bands (null quantiles)",
+    "detail": "uniform shares +0.008 / HHI +0.004",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: games.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M8 renumber distinct_recipients in games only",
+    "detail": "first-slot-20261113 recipients -> 55",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: games.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M3b permute engine cash inside offer sets",
+    "detail": "uniform-20261105 engine cash reversed within offers",
+    "verify_exit": 1,
+    "failed_checks": [
+      "checksums: decisions.parquet sha256 mismatch (tampered or rebuilt without updating checksums.json)"
+    ]
+  },
+  {
+    "mutation": "M9 regenerate checksums after tampering",
+    "detail": "l4-20261114 share -> 0.9 with checksums.json regenerated (logic layer must catch)",
+    "verify_exit": 1,
+    "failed_checks": [
+      "l4-20261114: games table agrees with decisions rows | 228/70/0.0439/0.0208"
+    ]
+  }
+]
