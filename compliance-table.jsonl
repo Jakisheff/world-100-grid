@@ -1,0 +1,8 @@
+{"model": "meta/llama-3.1-8b-instruct", "serving": "nvidia-nim-bf16", "prompt": "pass-only", "verdict": "FAIL", "detail": "0/100 calls; every answer invented produce_goods", "source": "WORLD_100_GRID_20261113 model arm"}
+{"model": "meta/llama-3.1-8b-instruct", "serving": "nvidia-nim-bf16", "prompt": "rich", "verdict": "PASS", "detail": "direct probes return exact menu objects", "source": "ops record"}
+{"model": "mistral:7b", "serving": "ollama-q4", "prompt": "pass-only", "verdict": "FAIL", "detail": "3/3 stable; invented bribe with wrong parameter name (target instead of to)", "source": "v2 smoke 2026-11-14"}
+{"model": "mistral:7b", "serving": "ollama-q4", "prompt": "rich", "verdict": "PASS", "detail": "exact produce object", "source": "v2 smoke"}
+{"model": "gemma2:9b", "serving": "ollama-q4", "prompt": "pass-only", "verdict": "PASS", "detail": "3/3 stable exact pass object", "source": "v2 smoke"}
+{"model": "gemma2:9b", "serving": "ollama-q4", "prompt": "rich", "verdict": "PASS", "detail": "exact produce object", "source": "v2 smoke"}
+{"model": "phi3.5:3.8b", "serving": "ollama-q4", "prompt": "pass-only", "verdict": "PASS", "detail": "3/3 stable exact pass object", "source": "v2 smoke"}
+{"model": "phi3.5:3.8b", "serving": "ollama-q4", "prompt": "rich", "verdict": "PASS", "detail": "exact produce object", "source": "v2 smoke"}
