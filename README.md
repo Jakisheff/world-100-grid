@@ -97,3 +97,11 @@ object) or FAIL (with the raw answer). Add your model's line to the
 compliance table by reporting the verdict JSON; section 1 of the note
 cites results this way, and the harness is what grows n beyond the
 author's GPU.
+
+## Compliance table (v2, 2026-11-14)
+
+`compliance-table.jsonl` records the multi-family smoke: Llama-3.1-8B
+(NIM) and Mistral-7B (Ollama) fail the single-action menu; Gemma-2-9B
+and Phi-3.5 pass; all four comply on the richer menu. Add your family
+with `node model-smoke.mjs <endpoint> <model>` and append the verdict
+line.
