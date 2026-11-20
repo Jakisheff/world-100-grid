@@ -29,7 +29,7 @@ It prints a binary verdict (PASS = exact menu object, FAIL = raw answer).
 Append the verdict JSON to `compliance-table.jsonl` and open a PR — that is
 how n grows beyond the author's hardware.
 
-## 3. Run a complete world yourself (about three minutes)
+## 3. Run a complete world yourself (a few minutes)
 
 The engine lives in the [alashi repository](https://github.com/Jakisheff/alashi).
 The uniform-legal null arm plays a full game deterministically, no keys:
@@ -41,7 +41,7 @@ node tools/agent-bootstrap/world-demo.mjs \
   --worker "$PWD/arena/target/debug/world_worker" --dir "$(mktemp -d)/world"
 ```
 
-Seed 20261121, three independent runs give a bit-identical `state_hash`
+Seed 20261121: five independent runs across two independent checkouts (including a fresh GitHub clone) give a bit-identical `state_hash`
 (`5867c34c…`): 147 calls, 147 accepted, 0 rejected, winner `agent-006`,
 payout 76,000,000, rake 4,000,000. The run directory keeps the frozen
 config, every decision, and the engine replay receipt.
