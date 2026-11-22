@@ -237,5 +237,24 @@ check('H2: acceptance HHI numerator/denominator exactly 1070/224^2',
       hhi_num == 1070 and m_acc == 224,
       f'hhi_num={hhi_num} hhi_den={m_acc * m_acc}')
 
+# I: package completeness (falsification 23.11): a green run must also mean
+# the published row counts hold, game ids are unique, and every decisions
+# game agrees with its games row on arm and seed. Without this, dropping or
+# fabricating a games row (after refreshing checksums) stayed green.
+check('I: 50 games and 7410 decision rows', len(games) == 50 and len(decisions) == 7410,
+      f'{len(games)}/{len(decisions)}')
+_ids = [g['game'] for g in games]
+check('I: game ids unique', len(set(_ids)) == len(_ids))
+_game_by_name = {g['game']: g for g in games}
+_mismatch = []
+for _name, _rows in by_game.items():
+    _g = _game_by_name.get(_name)
+    if _g is None:
+        _mismatch.append(f'{_name}: decisions without a games row')
+        continue
+    if {r['arm'] for r in _rows} != {_g['arm']} or {r['seed'] for r in _rows} != {_g['seed']}:
+        _mismatch.append(f'{_name}: arm/seed disagreement')
+check('I: every decisions game matches a games row (arm, seed)', not _mismatch, '; '.join(_mismatch[:4]))
+
 print(f"\n{'ALL CLAIMS REPRODUCED' if not failures else str(len(failures)) + ' FAILURES'}")
 sys.exit(1 if failures else 0)

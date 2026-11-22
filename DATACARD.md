@@ -1,6 +1,9 @@
 # world-100-grid: bounded-menu agent games with engine-verified outcomes
 
-Self-verifying dataset package: 50 recorded games of 100 agents in one
+Self-verifying dataset package (integrity of counts and cross-table
+agreement is enforced by verify.py claim I; provenance fields like
+worker_sha256/driver_sha256 are carried, not independently recomputed -
+attestation of rejected/skipped attempts is planned for the next schema): 50 recorded games of 100 agents in one
 shared ALASHI political-economy game (canonical Rust rules, six rounds),
 plus a stopped model-compliance attempt. Every claimed number in the
 run records is recomputed from the published rows by `verify.py`; a
