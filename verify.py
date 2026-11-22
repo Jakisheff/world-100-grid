@@ -195,5 +195,47 @@ check('G: model run stopped at provider_failure_threshold with zero accepted',
       and model['accepted_actions'] == 0,
       f"status={model and model.get('status')}, reason={model and model.get('stop_reason')}")
 
+# H: volume-invariant concentration (ADR-001 D2). The raw HHI carries a
+# finite-sample bias (1 - 1/K)/m that inverts the l4-vs-uniform comparison
+# when bribe volumes differ; the unbiased collision estimator
+# sum(ci(ci-1))/(m(m-1)) removes the volume confound. It SUPPLEMENTS the
+# conditional permutation (claim D), never replaces it: the estimator
+# assumes draws from a fixed urn, while agents pick from bounded menus.
+from collections import Counter
+
+def unbiased_hhi(rows):
+    counts = Counter(r['chosen'] for r in rows)
+    m = len(rows)
+    if m < 2:
+        return None
+    return sum(c * (c - 1) for c in counts.values()) / (m * (m - 1))
+
+inv_raw, inv_unb = 0, 0
+for seed in range(20261101, 20261121):
+    l4n, un = arm_game('l4', seed), arm_game('uniform', seed)
+    if not l4n or not un:
+        continue
+    ul_, uu_ = unbiased_hhi(by_game[l4n]), unbiased_hhi(by_game[un])
+    if ul_ is None or uu_ is None:
+        continue
+    if ul_ < uu_:
+        inv_unb += 1
+    gl_ = next(g for g in games if g['game'] == l4n)
+    gu_ = next(g for g in games if g['game'] == un)
+    if gl_['recipient_hhi'] < gu_['recipient_hhi']:
+        inv_raw += 1
+check('H: unbiased HHI inversion l4<uniform on 0 of 20 paired seeds (raw: 18/20)',
+      inv_unb == 0 and 15 <= inv_raw <= 19,
+      f'raw={inv_raw}/20 unbiased={inv_unb}/20')
+
+# H2: exact integer concentration bookkeeping (no float drift): the
+# acceptance run's HHI equals sum(ci^2)/m^2 = 1070/224^2 exactly.
+counts_acc = Counter(r['chosen'] for r in by_game['l4-20261109-original'])
+hhi_num = sum(c * c for c in counts_acc.values())
+m_acc = len(by_game['l4-20261109-original'])
+check('H2: acceptance HHI numerator/denominator exactly 1070/224^2',
+      hhi_num == 1070 and m_acc == 224,
+      f'hhi_num={hhi_num} hhi_den={m_acc * m_acc}')
+
 print(f"\n{'ALL CLAIMS REPRODUCED' if not failures else str(len(failures)) + ' FAILURES'}")
 sys.exit(1 if failures else 0)

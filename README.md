@@ -47,7 +47,7 @@ green run of `verify.py` is the acceptance test for this package.
 | l4 | 20 + 1 | legal-only attacker, bribe the richest visible legal target (l4-20261109-original is the acceptance run of the first L4 record) |
 | first-slot | 3 | positional control: always the first offered peer |
 | blind | 3 | l4 under a driver whose prompts hide opponent cash |
-| model | 1 | meta/llama-3.1-8b-instruct on NVIDIA NIM; stopped at the preregistered failure threshold, 0 accepted actions |
+| model | 3 | meta/llama-3.1-8b-instruct on NVIDIA NIM; three stopped attempts (20261109/13/14, all `provider_failure_threshold`, 0 accepted actions); verify.py claim G checks the first |
 
 ## Claims verified by verify.py
 
@@ -57,11 +57,11 @@ acceptance-run counts (224 bribes / 70 recipients / share 8/224 / HHI
 permutation breach of every L4 game (p < 0.05 on share and HHI), the
 blind arm's dead aiming (midrank percentile 0.40-0.60 against engine
 cash), the 20/20 paired percentile effect with mean 0.20-0.28 and the
-18/20 negative paired HHI, and the model stop. `headline.py` prints the
+18/20 negative paired HHI, the model stop, the volume-invariant check (claims H/H2: the unbiased collision estimator sum(ci(ci-1))/(m(m-1)) shows 0/20 inversions on the same pairs, and the acceptance HHI is exactly 1070/224^2 in integer arithmetic). `headline.py` prints the
 headline chain from rows alone. The GitHub mirror runs verify.py in CI
 on every push: https://github.com/Jakisheff/world-100-grid
 
-Two numbers cited but external to this package: run 1 (80.56%) and
+Two numbers cited but external_unverified (ADR-001 D2: not under checksums.json; do not use as evidence without the source journal): run 1 (80.56%) and
 run 2 (7.14%) of the recorded BitLLM games,
 docs/ops/WORLD_100_BRIBE_FIX_20261109.md in the alashi repository
 (commit pin in checksums.json).
