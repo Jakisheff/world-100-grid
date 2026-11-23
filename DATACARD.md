@@ -38,7 +38,7 @@ acceptance-run counts (224 bribes / 70 recipients / share 8/224 / HHI
 permutation breach of every L4 game (p < 0.05 on share and HHI), the
 blind arm's dead aiming (midrank percentile 0.40-0.60 against engine
 cash), the 20/20 paired percentile effect with mean 0.20-0.28 and the
-18/20 negative paired HHI, the model stop, the volume-invariant check (claims H/H2: the unbiased collision estimator sum(ci(ci-1))/(m(m-1)) shows 0/20 inversions on the same pairs, and the acceptance HHI is exactly 1070/224^2 in integer arithmetic). `headline.py` prints the
+18/20 negative paired HHI, the model stop, the choice-collusion steganography bound (claim J: engine-midrank inside visible-equivalent offer classes stays at chance; an informed max-engine attack measures 0.806, z=+32), the volume-invariant check (claims H/H2: the unbiased collision estimator sum(ci(ci-1))/(m(m-1)) shows 0/20 inversions on the same pairs, and the acceptance HHI is exactly 1070/224^2 in integer arithmetic). `headline.py` prints the
 headline chain from rows alone.
 
 Two numbers cited but external_unverified (ADR-001 D2: not under checksums.json; do not use as evidence without the source journal): run 1 (80.56%) and

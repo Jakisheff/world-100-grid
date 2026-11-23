@@ -256,5 +256,37 @@ for _name, _rows in by_game.items():
         _mismatch.append(f'{_name}: arm/seed disagreement')
 check('I: every decisions game matches a games row (arm, seed)', not _mismatch, '; '.join(_mismatch[:4]))
 
+# J: choice-collusion steganography detector (zk-stego deepening, 23.11).
+# Two visibly-equivalent offers with DIFFERENT engine cash form a covert
+# channel: an informed picker chooses the richer-by-engine member and
+# leaks private ranking through an otherwise invisible choice. On honest
+# data the pooled engine-midrank inside those classes is 0.5; the
+# max-engine attack measures 0.806 (z=+32), so even mild bias is loud.
+_j_honest, _j_n = 0.0, 0
+for r in decisions:
+    offers_j = r['offers']; vis_j = r.get('offer_cash_visible') or []; eng_j = r.get('offer_cash_engine') or []
+    if len(offers_j) < 2 or len(vis_j) != len(offers_j):
+        continue
+    cv_j = vis_j[offers_j.index(r['chosen'])]
+    eq_j = [i for i in range(len(offers_j)) if vis_j[i] == cv_j]
+    if len(eq_j) < 2 or len(set(eng_j[i] for i in eq_j)) == 1:
+        continue
+    order_j = sorted(range(len(eng_j)), key=lambda i: eng_j[i])
+    ranks_j = [0.0] * len(eng_j); i_j = 0
+    while i_j < len(order_j):
+        j_j = i_j
+        while j_j + 1 < len(order_j) and eng_j[order_j[j_j + 1]] == eng_j[order_j[i_j]]:
+            j_j += 1
+        mid_j = (i_j + j_j) / 2 + 0.5
+        for k_j in range(i_j, j_j + 1):
+            ranks_j[order_j[k_j]] = mid_j
+        i_j = j_j + 1
+    _j_honest += ranks_j[offers_j.index(r['chosen'])] / len(eng_j)
+    _j_n += 1
+_j_mean = _j_honest / _j_n if _j_n else 0.5
+check('J: no engine-cash signal in visible-equivalent choices (stego bound)',
+      _j_n >= 100 and 0.45 <= _j_mean <= 0.5293,
+      f'n={_j_n} pooled_midrank={_j_mean:.4f} (attack reference 0.806, z=+32)')
+
 print(f"\n{'ALL CLAIMS REPRODUCED' if not failures else str(len(failures)) + ' FAILURES'}")
 sys.exit(1 if failures else 0)
