@@ -46,6 +46,30 @@ run 2 (7.14%) of the recorded BitLLM games,
 docs/ops/WORLD_100_BRIBE_FIX_20261109.md in the alashi repository
 (commit pin in checksums.json).
 
+## Deployment classes
+
+Model-facing arms record the serving path in `compliance-table.jsonl`
+(`serving` field: hosted API, local runtime, or P2P network). Classes are
+never merged: a compliance finding for a model behind one serving path is
+not evidence for the same weights behind another (`nvidia-nim-bf16` hosted
+vs `ollama-q4` local vs BitLLM P2P). Scripted arms (uniform, l4, first-slot,
+blind) are engine-driven and carry no model claims at all.
+
+## Transcripts, artifacts and baselines
+
+- `compliance-table.jsonl` records every model-compliance arm verbatim:
+  model, serving path, prompt class, verdict, one-line detail.
+- `data/model-smoke-prompt.json` holds the exact round-one market prompt
+  under which a hosted model produced 100/100 non-callable answers.
+- Full per-run records for the model attempts live in the alashi
+  repository ops records covered by the commit pin in
+  `data/checksums.json`: `docs/ops/world-100-20261109/`,
+  `docs/ops/WORLD_100_GRID_20261113.md`,
+  `docs/ops/b2-model-behavior-20261114/`.
+- Claims policy: a "model failed" statement is reported only against a
+  stated baseline. Here the scripted arms (uniform, l4) are the engine
+  baselines the model arms are read against; no bare failure claims.
+
 ## Provenance and integrity
 
 Every row carries the frozen experiment digest and the SHA-256 of the
